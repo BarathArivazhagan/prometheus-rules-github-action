@@ -1,0 +1,23 @@
+- name: application-test-kafka-consumer1.alerting.rules
+  rules:
+    - alert: application-test-kafka-consumer-PodDown-NonProd
+      annotations:
+        description: 'Warning: One or more pod(s) for {{ $labels.container }} in {{ $labels.namespace
+          }} seems to be down. Current pod count is {{ $value }}'
+        identifier: '{{ $labels.role }}/{{ $labels.env}}/{{ $labels.namespace}}'
+        summary: Host {{ $labels.container }} has not been reachable for 2 minutes
+      expr: (sum(kube_pod_container_info{container="application-test-kafka-consumer",
+        namespace="stg", env="nonprod"}) by (role, env, namespace, container)) < 1 OR
+        absent(kube_pod_container_info{container="application-test-kafka-consumer", role="eks",
+        env="nonprod", namespace="stg"}) == 1
+      for: 2m
+      labels:
+        owner: poc-application
+        severity: warning
+- name: application-test-kafka-consumer.recording.rules
+  rules:
+    - expr: '(sum(kube_pod_container_info{container="application-test-kafka-consumer",
+        namespace="stg", env="nonprod"}) by (role, env, namespace, container)) < 1 OR
+        absent(kube_pod_container_info{container="application-test-kafka-consumer", role="eks",
+        env="nonprod", namespace="stg"}) == 1 '
+      record: application_xc_consumer_pod_container:pod_count_total:sum_pods

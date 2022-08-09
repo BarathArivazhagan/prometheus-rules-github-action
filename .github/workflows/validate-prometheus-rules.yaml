@@ -12,27 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: azure/setup-helm@v3
-        with:
-          version: 'v3.5.0'
-        id: helm-install
-      - name: Helm Templates scrape files
-        run: |
-            pwd
-            printenv
-            helm version
-            ls -ltra
-            cd application-1
-            ls -ltra
-            helm template ../application-1 --output-dir ../../../out  -f values/dev.yaml
-            ls -ltra ../../../out
-            cat ../../../out/application/templates/prometheusrule.yaml
-            pwd
       - uses: peimanja/promtool-github-actions@master
         name: check prometheus rules
         with:
           promtool_actions_subcommand: 'rules'
-          promtool_actions_files: 'out/*.yaml'
+          promtool_actions_files: '*/rules/*.yaml'
           promtool_actions_version: '2.14.0'
           promtool_actions_comment: false
 
