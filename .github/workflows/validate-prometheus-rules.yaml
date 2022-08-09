@@ -12,11 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      # - name: duplicate rules files
+      #       run: |
+      #         cd config/prometheus/rules
+      #         mkdir -p temp
+      #         for FILE in *.yaml; do echo groups: >temp/$FILE;cat $FILE >>temp/$FILE; done
       - uses: peimanja/promtool-github-actions@master
         name: check prometheus rules
         with:
           promtool_actions_subcommand: 'rules'
-          promtool_actions_files: '*/rules/*.yaml'
+          promtool_actions_files: 'application-1/rules/*.yaml'
           promtool_actions_version: '2.14.0'
           promtool_actions_comment: false
 
