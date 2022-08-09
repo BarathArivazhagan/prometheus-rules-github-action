@@ -1,4 +1,5 @@
-{{- $files := .Files.Glob "rules/*.yaml" }}
+{{- $filePath := printf "rules/%s/*.yaml" .Values.env }}
+{{- $files := .Files.Glob $filePath }}
 {{ if ($files) }}
 {{- range $path, $fileContents := $files }}
 {{- $groupName := regexReplaceAll "(^.*/)(.*)\\.yaml$" $path "${2}" }}
