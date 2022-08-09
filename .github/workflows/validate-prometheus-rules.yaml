@@ -24,6 +24,8 @@ jobs:
             ls -ltra
             helm template ../application-1 --output-dir ../out  -f values/dev.yaml
             ls -ltra ../out
+            cat ../out/application/templates/prometheusrule.yaml
+            pwd
       - uses: peimanja/promtool-github-actions@master
         name: check prometheus rules
         with:
