@@ -1,0 +1,34 @@
+name: Prometheus Rule Validations
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  TF_CODE_PATH: lma-npd-west-main
+  TF_VERSION: 1.0.5
+
+jobs:
+  promtool:
+    name: check prometheus config files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/setup-helm@v3
+        with:
+          version: 'v3.5.0'
+        id: helm-install
+      - name: Helm Templates scrape files
+        run: |
+            helm --version
+      - uses: peimanja/promtool-github-actions@master
+        name: check prometheus rules
+        with:
+          promtool_actions_subcommand: 'rules'
+          promtool_actions_files: 'config/prometheus/rules/temp/*.yaml'
+          promtool_actions_version: '2.14.0'
+          promtool_actions_comment: false
+
+
