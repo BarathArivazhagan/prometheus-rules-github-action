@@ -26,13 +26,13 @@ jobs:
             ls -ltra
             helm template ../application-1 --output-dir ../out  -f values/dev.yaml
             ls -ltra ../out
-            cat ../out/application/templates/prometheusrule.yaml
+            cat ../../out/application/templates/prometheusrule.yaml
             pwd
       - uses: peimanja/promtool-github-actions@master
         name: check prometheus rules
         with:
           promtool_actions_subcommand: 'rules'
-          promtool_actions_files: '*.yaml'
+          promtool_actions_files: 'out/*.yaml'
           promtool_actions_version: '2.14.0'
           promtool_actions_comment: false
 
