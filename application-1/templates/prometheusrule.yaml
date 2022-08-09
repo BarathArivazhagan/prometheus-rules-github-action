@@ -1,0 +1,32 @@
+{{ range $prometheusRule := .Values.prometheusRules }}
+
+{{ if (default $prometheusRule.enabled true) }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ $prometheusRule.name }}
+  {{- if $prometheusRule.namespace }}
+  namespace: {{ $prometheusRule.namespace }}
+  {{- end }}
+  labels:
+    {{- include "prometheusrule.labels" $ | nindent 4 }}
+    {{- if $prometheusRule.labels }}
+    {{- with $prometheusRule.labels }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- end }}
+spec:
+  groups:
+    {{- with $prometheusRule.alertingRules }}
+    - name: {{ $prometheusRule.applicationName | lower }}.alerting.rules
+      rules:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with $prometheusRule.recordingRules }}
+    - name: {{ $prometheusRule.applicationName | lower }}.recording.rules
+      rules:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{ end }}
+{{ end }}
