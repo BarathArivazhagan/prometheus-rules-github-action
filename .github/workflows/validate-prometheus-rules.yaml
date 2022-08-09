@@ -22,7 +22,7 @@ jobs:
         id: helm-install
       - name: Helm Templates scrape files
         run: |
-            helm --version
+            helm version
             ls -ltra
             cd application-1
             helm template --output-dir ../out ../application-1 -f values/dev.yaml
