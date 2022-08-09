@@ -14,10 +14,3 @@
       labels:
         owner: poc-application
         severity: warning
-- name: application-test-kafka-consumer.recording.rules
-  rules:
-    - expr: '(sum(kube_pod_container_info{container="application-test-kafka-consumer",
-        namespace="stg", env="nonprod"}) by (role, env, namespace, container)) < 1 OR
-        absent(kube_pod_container_info{container="application-test-kafka-consumer", role="eks",
-        env="nonprod", namespace="stg"}) == 1 '
-      record: application_xc_consumer_pod_container:pod_count_total:sum_pods
