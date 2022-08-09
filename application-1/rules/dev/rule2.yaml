@@ -1,3 +1,4 @@
+groups:
 - name: application-test-kafka-consumer1.alerting.rules
   rules:
     - alert: application-test-kafka-consumer-PodDown-NonProd
