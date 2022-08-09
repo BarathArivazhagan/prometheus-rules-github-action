@@ -21,7 +21,7 @@ jobs:
         name: check prometheus rules
         with:
           promtool_actions_subcommand: 'rules'
-          promtool_actions_files: 'application-1/rules/*.yaml'
+          promtool_actions_files: 'application-1/rules/*/*.yaml'
           promtool_actions_version: '2.14.0'
           promtool_actions_comment: false
 
