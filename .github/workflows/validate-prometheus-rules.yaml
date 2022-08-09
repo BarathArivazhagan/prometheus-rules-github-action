@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [master]
 
-env:
-  TF_CODE_PATH: lma-npd-west-main
-  TF_VERSION: 1.0.5
-
 jobs:
   promtool:
     name: check prometheus config files
@@ -25,7 +21,8 @@ jobs:
             helm version
             ls -ltra
             cd application-1
-            helm template --output-dir ../out ../application-1 -f values/dev.yaml
+            ls -ltra
+            helm template ../application-1 --output-dir ../out  -f values/dev.yaml
             ls -ltra ../out
       - uses: peimanja/promtool-github-actions@master
         name: check prometheus rules
